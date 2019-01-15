@@ -3,7 +3,7 @@ const path = require('path');
 const child_process = require('child_process');
 const { getSecHeadResult, getData, getResults } = require('./');
 
-const securityheadersTestData = fs.readFileSync('./test/mock-data/result.html');
+const securityheadersTestData = fs.readFileSync('./test/mock-data/headers.txt');
 
 jest.mock('child_process', () => {
     return {
@@ -25,7 +25,7 @@ describe('securityheaders', () => {
         const filePath = path.join(__dirname, '../../reports/securityheaders-results/securityheaders.com', today.toISOString());
         fs.ensureDirSync(filePath);
 
-        fs.writeFileSync(path.join(filePath, 'securityheaders.html'), securityheadersTestData);
+        fs.writeFileSync(path.join(filePath, 'headers.txt'), securityheadersTestData);
 
     })
 
@@ -33,7 +33,7 @@ describe('securityheaders', () => {
         fs.removeSync(path.join(__dirname, '../../../reports/securityheaders-results/securityheaders.com'));
     });
 
-    describe('getSecHeadResult', () => {securityheaders.com/
+    describe('getSecHeadResult', () => {
 
         it('finds and resolves the securityheaders results for the given url', async () => {
 
