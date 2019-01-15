@@ -9,6 +9,14 @@
 **Highlights**
 
 -   Poll for http://securityheaders.com/ score on any website and stores the data into InfluxDB
+    *  A+ - 100
+    *  A  - 90
+    *  B  - 80
+    *  C  - 60
+    *  D  - 40
+    *  E  - 20
+    *  F  - 10
+    *  R  - 0
 -   Webhook support
 -   View all historic reports.
 -   Setup within minutes

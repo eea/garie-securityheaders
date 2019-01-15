@@ -63,7 +63,7 @@ function getResults(url, file) {
            result[key] = 20;
            break;
         case 'F':
-           result[key] = 0;
+           result[key] = 10;
            break;
         default:
            result[key] = 0;
