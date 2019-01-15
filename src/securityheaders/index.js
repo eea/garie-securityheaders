@@ -33,7 +33,7 @@ function reportDir(url) {
 
 function getResults(url, file) {
     
-    const regex = RegExp('x-grade: ([A-Z]+?)', 'i');
+    const regex = RegExp('x-grade: (.*)', 'i');
     
     const grade = regex.exec(file);
 
