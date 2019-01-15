@@ -78,11 +78,9 @@ function getResults(url, file) {
 const getSecHeadResult = (url = '') => {
     try {
         const folders = fs.readdirSync(reportDir(url));
-
         const sortFoldersByTime = folders.sort(function(a, b) {
-            return new Date(b) - new Date(a);
+            return new Date(a) - new Date(b);
         });
-
         const newestFolder = sortFoldersByTime[sortFoldersByTime.length - 1];
 
         const securityheadersFile = fs.readFileSync(path.join(reportDir(url), newestFolder, 'headers.txt'), "utf8");
