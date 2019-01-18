@@ -4,6 +4,8 @@ const child_process = require('child_process');
 const { getSecHeadResult, getData, getResults } = require('./');
 
 const securityheadersTestData = fs.readFileSync('./test/mock-data/headers.txt');
+const mozillaTestData = fs.readFileSync('./test/mock-data/observatory.txt');
+
 
 jest.mock('child_process', () => {
     return {
@@ -26,6 +28,8 @@ describe('securityheaders', () => {
         fs.ensureDirSync(filePath);
 
         fs.writeFileSync(path.join(filePath, 'headers.txt'), securityheadersTestData);
+	fs.writeFileSync(path.join(filePath, 'observatory.txt'), mozillaTestData);
+
 
     })
 
@@ -38,8 +42,8 @@ describe('securityheaders', () => {
         it('finds and resolves the securityheaders results for the given url', async () => {
 
             const result = await getSecHeadResult('securityheaders.com');
-
-            expect(result).toEqual(getResults('securityheaders.com', securityheadersTestData));
+            
+            expect(result).toEqual(getScore(mozillaTestData,getResults(securityheadersTestData,{}));
 
         });
 
@@ -50,6 +54,7 @@ describe('securityheaders', () => {
 
     });
 
+
     describe('getData', () => {
 
         it('calls the shell script to get the data from securityheaders docker image and resolves with the securityheaders file flattened when succesfully finished', async () => {
@@ -57,7 +62,7 @@ describe('securityheaders', () => {
             const data = await getData('securityheaders.com');
             expect(child_process.spawn).toBeCalledWith('bash', [path.join(__dirname, './securityheaders.sh'), 'securityheaders.com', "/usr/src/garie-securityheaders/reports/securityheaders-results/securityheaders.com"]);
 
-            expect(data).toEqual(getResults('securityheaders.com', securityheadersTestData));
+            expect(data).toEqual(getScore(mozillaTestData,getResults(securityheadersTestData,{}));
 
 
         });

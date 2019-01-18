@@ -54,7 +54,7 @@ describe('influxdb', () => {
 
     describe('saveData', () => {
 
-        it('writes influxdb points into the database for each property on a given object if it has values', async () => {
+        it('writes influxdb points into the database for each property on a given object if it has values or is zero', async () => {
 
             const result = await saveData('https://www.test.com', { firstname: 'bob', lastname: 'bob' });
 
@@ -65,7 +65,8 @@ describe('influxdb', () => {
                         "url": "https://www.test.com"
                     },
                     "fields": {
-                        "value": "bob"
+                        "value": "bob",
+			"age": 0
                     }
                 },
                 {
@@ -82,23 +83,6 @@ describe('influxdb', () => {
 
         });
 
-        it('does not write influxdb points into the database for any property that does not have a value', async () => {
-
-            await saveData('https://www.test.com', { firstname: 'bob', lastname: undefined });
-
-            expect(influx.writePoints).toBeCalledWith([
-                {
-                    "measurement": "firstname",
-                    "tags": {
-                        "url": "https://www.test.com"
-                    },
-                    "fields": {
-                        "value": "bob"
-                    }
-                }
-            ]);
-
-        });
 
         it('rejects when writePoints fails to write into influxdb', async () => {
             influx.writePoints.mockRejectedValue();

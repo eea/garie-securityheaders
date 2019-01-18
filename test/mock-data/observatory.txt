@@ -1,0 +1,20 @@
+HTTP Observatory Report: securityheaders.com
+
+Score Rule                           Description
+    0 content-security-policy        Content Security Policy (CSP) implemented with unsafe sources inside style-src.
+    0 x-xss-protection               X-XSS-Protection header set to "1; mode=block".
+    0 cookies                        All cookies use the Secure flag and all session cookies use the HttpOnly flag.
+    0 cross-origin-resource-sharing  Content is not visible via cross-origin resource sharing (CORS) files or headers.
+    0 public-key-pinning             HTTP Public Key Pinning (HPKP) header not implemented.
+    0 redirection                    All hosts redirected to are in the HTTP Strict Transport Security (HSTS) preload list.
+    0 contribute                     Contribute.json isn't required on websites that don't belong to Mozilla.
+    0 x-frame-options                X-Frame-Options (XFO) header set to SAMEORIGIN or DENY.
+    0 x-content-type-options         X-Content-Type-Options header set to "nosniff".
+    5 subresource-integrity          Subresource Integrity (SRI) is implemented and all scripts are loaded securely.
+    5 strict-transport-security      Preloaded via the HTTP Strict Transport Security (HSTS) preloading process.
+    5 referrer-policy                Referrer-Policy header set to "no-referrer", "same-origin", "strict-origin" or "strict-origin-when-cross-origin".
+
+Score: 115
+Grade: A+
+
+Full Report Url: https://observatory.mozilla.org/analyze.html?host=securityheaders.com
