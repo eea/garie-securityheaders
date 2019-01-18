@@ -31,17 +31,15 @@ function reportDir(url) {
 }
 
 
-function getResults(url, file) {
+function getResults(file, result) {
     
     const regex = RegExp('x-grade: (.*)', 'i');
     
     const grade = regex.exec(file);
 
-    var result = {};
-
     const key = 'header_score';
 
-    console.log("Received score "+grade[1]+" for "+url);
+    console.log("Received securityheaders.com score "+grade[1]);
 
     switch(grade[1]){
         case 'A+':
@@ -74,6 +72,23 @@ function getResults(url, file) {
 }
 
 
+function getScore(file, result) {
+
+    const regex = RegExp('Score: (.*)', 'i');
+
+    const grade = regex.exec(file);
+
+    const key = 'mozilla_score';
+
+    console.log("Received mozilla score "+grade[1]);
+
+    result[key] = grade[1];
+
+    return result;
+
+}
+
+
 
 const getSecHeadResult = (url = '') => {
     try {
@@ -82,10 +97,20 @@ const getSecHeadResult = (url = '') => {
             return new Date(a) - new Date(b);
         });
         const newestFolder = sortFoldersByTime[sortFoldersByTime.length - 1];
-
+ 
+        var result = {};
+	    
         const securityheadersFile = fs.readFileSync(path.join(reportDir(url), newestFolder, 'headers.txt'), "utf8");
     
-        return Promise.resolve(getResults(url, securityheadersFile));
+	getResults(securityheadersFile, result);
+	
+        const mozillaFile = fs.readFileSync(path.join(reportDir(url), newestFolder, 'observatory.txt'), "utf8");
+
+	getScore(mozillaFile, result);
+
+	console.log(result);
+
+        return Promise.resolve(result);
 
     } catch (err) {
         console.log(err);

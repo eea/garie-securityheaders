@@ -5,16 +5,20 @@ RUN mkdir -p /usr/src/garie-securityheaders/reports
 
 WORKDIR /usr/src/garie-securityheaders
 
-COPY package.json .
 
-RUN npm install
+COPY package.json config.json ./
 
-COPY . .
+COPY src/ ./src/
+
+RUN npm install --only=production \ 
+  && npm install -g observatory-cli
+
+COPY docker-entrypoint.sh /
 
 EXPOSE 3000
 
 VOLUME ["/usr/src/garie-securityheaders/reports", "/usr/src/garie-securityheaders/logs"]
 
-ENTRYPOINT ["/usr/src/garie-securityheaders/docker-entrypoint.sh"]
+ENTRYPOINT ["/docker-entrypoint.sh"]
 
 CMD ["npm", "start"]
