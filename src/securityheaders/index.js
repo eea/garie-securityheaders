@@ -82,7 +82,7 @@ function getScore(file, result) {
 
     console.log("Received mozilla score "+grade[1]);
 
-    result[key] = grade[1];
+    result[key] = parseInt(grade[1]);
 
     return result;
 
@@ -100,15 +100,20 @@ const getSecHeadResult = (url = '') => {
  
         var result = {};
 	    
-        const securityheadersFile = fs.readFileSync(path.join(reportDir(url), newestFolder, 'headers.txt'), "utf8");
+        const folder = path.join(reportDir(url), newestFolder);
+	
+	console.log("Will try to read the results from: "+ folder);
+
+	    
+	const securityheadersFile = fs.readFileSync(path.join(folder, 'headers.txt'), "utf8");
     
 	getResults(securityheadersFile, result);
 	
-        const mozillaFile = fs.readFileSync(path.join(reportDir(url), newestFolder, 'observatory.txt'), "utf8");
+        const mozillaFile = fs.readFileSync(path.join(folder, 'observatory.txt'), "utf8");
 
 	getScore(mozillaFile, result);
 
-	console.log(result);
+	console.log("Will insert into the database: "+ JSON.stringify(result));
 
         return Promise.resolve(result);
 

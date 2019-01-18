@@ -2,13 +2,13 @@
     "cron": "0 */10 * * * *",
     "urls": [
         {
-            "url": "securityheaders.com"
+            "url": "www.radiotimes.com"
         },
 	{
-            "url": "google.ro"
+            "url": "amazon.co.uk"
         },
 	{
-            "url": "github.com"
+            "url": "taskman.eionet.europa.eu"
         }
     ]
 }

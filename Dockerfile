@@ -5,7 +5,6 @@ RUN mkdir -p /usr/src/garie-securityheaders/reports
 
 WORKDIR /usr/src/garie-securityheaders
 
-
 COPY package.json config.json ./
 
 COPY src/ ./src/
