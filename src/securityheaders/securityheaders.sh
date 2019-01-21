@@ -29,7 +29,9 @@ done
 
 curl  -H "Content-Type:text/html"  "$SECURITY_URL/?q=$1&followRedirects=on&hide=on" > $report_location/securityheaders.html
 
-observatory $1 --zero --format=report > $report_location/observatory.txt
+url=$(echo $1 | awk -F[/:] '{print $4}')
+
+observatory $url --zero --format=report > $report_location/observatory.txt
 
 echo "Received from mozilla observatory:"
 
