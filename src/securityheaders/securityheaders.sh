@@ -9,7 +9,7 @@ mkdir -p $report_location
 
 SECURITY_URL=${SECURITY_URL:-"https://securityheaders.com"}
 
-try=10
+try=20
 
 while [ $try -gt 0 ]; do
 
@@ -20,7 +20,7 @@ while [ $try -gt 0 ]; do
 
     if [ $(grep -iEc 'x-grade: [A-Z]\+?' $report_location/headers.txt) -eq 0 ]; then
          echo "Did not receive a grade, will wait for 10 seconds, then retry"   
-         sleep 10
+         sleep 20
 	 try=$(( $try - 1 ))
     else
 	 try=0
