@@ -31,13 +31,21 @@ function reportDir(url) {
 }
 
 
-function getResults(file, result) {
+function getResults(file, htmlFile, result) {
     
     const regex = RegExp('x-grade: (.*)', 'i');
     
-    const grade = regex.exec(file);
+    const regexHTML = RegExp('<div class="score">.*?<span>(.*)</span></div>', 'i');
+	
+    var grade = regex.exec(file);
 
     const key = 'header_score';
+
+
+    if (grade == null){
+        console.log("Did not receive a score, will try to extract from HTML file");
+        grade = regexHTML.exec(htmlFile);      
+    }
 
 
     if (grade == null){
@@ -46,6 +54,7 @@ function getResults(file, result) {
 	result[key] = 0;
 	return result
     }
+
 
     console.log("Received securityheaders.com score "+grade[1]);
 
@@ -121,8 +130,10 @@ const getSecHeadResult = (url = '') => {
 
 	    
 	const securityheadersFile = fs.readFileSync(path.join(folder, 'headers.txt'), "utf8");
-    
-	getResults(securityheadersFile, result);
+   
+        const securityheadersHTML =  fs.readFileSync(path.join(folder, 'securityheaders.html'), "utf8").replace(/\r?\n|\r/g, " ");
+
+	getResults(securityheadersFile, securityheadersHTML, result);
 	
         const mozillaFile = fs.readFileSync(path.join(folder, 'observatory.txt'), "utf8");
 

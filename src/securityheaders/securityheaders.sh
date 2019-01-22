@@ -9,7 +9,7 @@ mkdir -p $report_location
 
 SECURITY_URL=${SECURITY_URL:-"https://securityheaders.com"}
 
-try=20
+try=5
 
 while [ $try -gt 0 ]; do
 
@@ -20,7 +20,7 @@ while [ $try -gt 0 ]; do
 
     if [ $(grep -iEc 'x-grade: [A-Z]\+?' $report_location/headers.txt) -eq 0 ]; then
          echo "Did not receive a grade, will wait for 10 seconds, then retry"   
-         sleep 20
+         sleep 10
 	 try=$(( $try - 1 ))
     else
 	 try=0
@@ -30,6 +30,9 @@ done
 curl  -H "Content-Type:text/html"  "$SECURITY_URL/?q=$1&followRedirects=on&hide=on" > $report_location/securityheaders.html
 
 url=$(echo $1 | awk -F[/:] '{print $4}')
+
+# if null, will keep the old format
+url=${url:-$1}
 
 observatory $url --zero --format=report > $report_location/observatory.txt
 
