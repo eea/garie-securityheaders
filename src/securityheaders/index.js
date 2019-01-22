@@ -39,6 +39,14 @@ function getResults(file, result) {
 
     const key = 'header_score';
 
+
+    if (grade == null){
+	console.log("Did not receive a score, will set 0"); 
+	console.log(file);
+	result[key] = 0;
+	return result
+    }
+
     console.log("Received securityheaders.com score "+grade[1]);
 
     switch(grade[1]){
@@ -79,6 +87,13 @@ function getScore(file, result) {
     const grade = regex.exec(file);
 
     const key = 'mozilla_score';
+
+    if (grade == null){
+	console.log("Did not receive a score, will set 0"); 
+	console.log(file);
+	result[key] = 0;
+	return result
+    }
 
     console.log("Received mozilla score "+grade[1]);
 
