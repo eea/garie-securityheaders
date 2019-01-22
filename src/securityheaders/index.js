@@ -117,11 +117,8 @@ function getScore(file, result) {
 const getSecHeadResult = (url = '') => {
     try {
         const folders = fs.readdirSync(reportDir(url));
-        const sortFoldersByTime = folders.sort(function(a, b) {
-            return new Date(a) - new Date(b);
-        });
-        const newestFolder = sortFoldersByTime[sortFoldersByTime.length - 1];
- 
+        const newestFolder = folders[folders.length - 1];
+
         var result = {};
 	    
         const folder = path.join(reportDir(url), newestFolder);
