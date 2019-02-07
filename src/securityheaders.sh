@@ -34,6 +34,7 @@ url=$(echo $1 | awk -F[/:] '{print $4}')
 # if null, will keep the old format
 url=${url:-$1}
 
+echo "observatory $url --zero --format=report > $report_location/observatory.txt"
 observatory $url --zero --format=report > $report_location/observatory.txt
 
 echo "Received from mozilla observatory:"

@@ -9,9 +9,11 @@ services:
             - INFLUXDB_ADMIN_PASSWORD=admin
 
     garie_plugin:
-        image: '<my_garie_plugin>:latest'
+        build: .
         privileged: true
         volumes:
+            - ./src:/usr/src/garie_plugin/src:z
+            - ./config.json:/usr/src/garie_plugin/config.json:z
             - /var/run/docker.sock:/run/docker.sock
             - /usr/bin/docker:/bin/docker
         ports:
@@ -20,6 +22,7 @@ services:
             - HOST=influxdb
         depends_on:
             - influxdb
+        command: bash -c "tail -f /dev/null"
 
     chronograf:
         image: 'chronograf:latest'
