@@ -1,23 +1,22 @@
 FROM node:8.10.0
 
-RUN mkdir -p /usr/src/garie-securityheaders
-RUN mkdir -p /usr/src/garie-securityheaders/reports
+RUN mkdir -p /usr/src/garie_plugin
+RUN mkdir -p /usr/src/garie_plugin/reports
 
-WORKDIR /usr/src/garie-securityheaders
+WORKDIR /usr/src/garie_plugin
 
-COPY package.json config.json ./
+COPY package.json .
 
-COPY src/ ./src/
+RUN cd /usr/src/garie_plugin && npm install
 
-RUN npm install --only=production \ 
-  && npm install -g observatory-cli
+RUN npm install -g observatory-cli
 
-COPY docker-entrypoint.sh /
+COPY . .
 
 EXPOSE 3000
 
-VOLUME ["/usr/src/garie-securityheaders/reports", "/usr/src/garie-securityheaders/logs"]
+VOLUME ["/usr/src/garie_plugin/reports"]
 
-ENTRYPOINT ["/docker-entrypoint.sh"]
+ENTRYPOINT ["/usr/src/garie_plugin/docker-entrypoint.sh"]
 
 CMD ["npm", "start"]
