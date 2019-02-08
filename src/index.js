@@ -137,7 +137,7 @@ const main = async () => {
   garie_plugin.init({
     database:'securityheaders',
     getData:myGetData,
-    app_name:'securityheaders',
+    app_name:'securityheaders-results',
     app_root: path.join(__dirname, '..'),
     config:config
   });
