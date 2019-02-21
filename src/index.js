@@ -135,9 +135,10 @@ app.use('/reports', express.static('reports'), serveIndex('reports', { icons: tr
 
 const main = async () => {
   garie_plugin.init({
-    database:'securityheaders',
+    db_name:'securityheaders',
     getData:myGetData,
-    app_name:'securityheaders-results',
+    plugin_name:'securityheaders',
+    report_folder_name:'securityheaders-results',
     app_root: path.join(__dirname, '..'),
     config:config
   });
