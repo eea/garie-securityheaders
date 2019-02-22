@@ -90,7 +90,7 @@ const myGetFile = async (options) => {
     var securityheadersHTML = await garie_plugin.utils.helpers.getNewestFile(options);
     securityheadersHTML = securityheadersHTML.toString('utf8').replace(/\r?\n|\r/g, " ");
 
-    options.fileName = 'observatory.txt'
+    options.fileName = 'mozilla-observatory.txt'
     var mozillaFile = await garie_plugin.utils.helpers.getNewestFile(options);
     mozillaFile = mozillaFile.toString('utf8');
 
