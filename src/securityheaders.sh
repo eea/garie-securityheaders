@@ -34,12 +34,12 @@ url=$(echo $1 | awk -F[/:] '{print $4}')
 # if null, will keep the old format
 url=${url:-$1}
 
-echo "observatory $url --zero --format=report > $report_location/observatory.txt"
-observatory $url --zero --format=report > $report_location/observatory.txt
+echo "observatory $url --zero --format=report > $report_location/mozilla-observatory.txt"
+observatory $url --zero --format=report > $report_location/mozilla-observatory.txt
 
 echo "Received from mozilla observatory:"
 
-grep -i score:  $report_location/observatory.txt
+grep -i score:  $report_location/mozilla-observatory.txt
 
 echo "Finished getting data for: $1"
 
