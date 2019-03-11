@@ -136,7 +136,7 @@ app.use('/reports', express.static('reports'), serveIndex('reports', { icons: tr
 const main = async () => {
   return new Promise(async (resolve, reject) => {
     try{
-      garie_plugin.init({
+      await garie_plugin.init({
         db_name:'securityheaders',
         getData:myGetData,
         plugin_name:'securityheaders',
