@@ -35,11 +35,29 @@ url=$(echo $1 | awk -F[/:] '{print $4}')
 url=${url:-$1}
 
 echo "observatory $url --zero --format=report > $report_location/mozilla-observatory.txt"
-observatory $url --zero --format=report > $report_location/mozilla-observatory.txt
 
-echo "Received from mozilla observatory:"
+try=5
 
-grep -i score:  $report_location/mozilla-observatory.txt
+while [ $try -gt 0 ]; do
+
+    observatory $url --zero --format=report > $report_location/mozilla-observatory.txt
+
+    echo "Will extract the received score from mozilla observatory:"
+
+    grep -i score:  $report_location/mozilla-observatory.txt
+
+    if [ $(grep -ic score: $report_location/mozilla-observatory.txt) -eq 0 ]; then
+         echo "Did not receive a score, will wait for 10 seconds, then retry"   
+         sleep 10
+	 try=$(( $try - 1 ))
+    else
+	 try=0
+    fi
+done
+
+
+
+
 
 echo "Finished getting data for: $1"
 
