@@ -4,6 +4,7 @@ const config = require('../config');
 const express = require('express');
 const bodyParser = require('body-parser');
 const serveIndex = require('serve-index');
+const scrape = require('website-scraper');
 
 function getResults(file, htmlFile) {
     var result = {};
@@ -82,11 +83,36 @@ function getScore(file, result) {
 }
 
 const myGetFile = async (options) => {
+    const { url } = options;
+    const { reportDir } = options;
+
     options.fileName = 'headers.txt';
     var securityheadersFile = await garie_plugin.utils.helpers.getNewestFile(options);
     securityheadersFile = securityheadersFile.toString('utf8')
 
     options.fileName = 'securityheaders.html'
+
+    const newestDir = await garie_plugin.utils.helpers.newestDir({'report_folder_name':'securityheaders-results', url:url, app_root:path.join(__dirname, '..')});
+
+    const newestFullPath = path.join(__dirname, '..', 'reports', 'securityheaders-results', garie_plugin.utils.helpers.pathNameFromUrl(url), newestDir);
+
+    const securityheaders_url = "https://securityheaders.com/?q="+url+"&followRedirects=on&hide=on"
+    const scrape_options = {
+            urls: [{url: securityheaders_url, filename: options.fileName},],
+            directory: newestFullPath + '/tmp'
+        };
+
+    const html_result = await scrape(scrape_options);
+
+    const mv_options = {
+            script: path.join(__dirname, './mv_scraped_page.sh'),
+            url: url,
+            reportDir: reportDir,
+            params: [newestFullPath],
+            callback: function(){}
+        }
+    await garie_plugin.utils.helpers.executeScript(mv_options);
+
     var securityheadersHTML = await garie_plugin.utils.helpers.getNewestFile(options);
     securityheadersHTML = securityheadersHTML.toString('utf8').replace(/\r?\n|\r/g, " ");
 

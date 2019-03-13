@@ -27,8 +27,6 @@ while [ $try -gt 0 ]; do
     fi
 done
 
-curl  -H "Content-Type:text/html"  "$SECURITY_URL/?q=$1&followRedirects=on&hide=on" > $report_location/securityheaders.html
-
 url=$(echo $1 | awk -F[/:] '{print $4}')
 
 # if null, will keep the old format
