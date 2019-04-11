@@ -88,7 +88,11 @@ On start garie-securityheaders will start to gather performance metrics for the 
 
 | Property | Type                | Description                                                                          |
 | -------- | ------------------- | ------------------------------------------------------------------------------------ |
-| `cron`   | `string` (optional) | Cron timer. Supports syntax can be found [here].(https://www.npmjs.com/package/cron) |
+| `plugins.securityheaders.cron`   | `string` (optional) | Cron timer. Supports syntax can be found [here].(https://www.npmjs.com/package/cron) |
+| `plugins.securityheaders.retry`   | `object` (optional) | Configuration how to retry the failed tasks |
+| `plugins.securityheaders.retry.after`   | `number` (optional, default 30) | Minutes before we retry to execute the tasks |
+| `plugins.securityheaders.retry.times`   | `number` (optional, default 3) | How many time to retry to execute the failed tasks |
+| `plugins.securityheaders.retry.timeRange`   | `number` (optional, default 360) | Period in minutes to be checked in influx, to know if a task failed |
 | `urls`   | `object` (required) | Config for securityheaders. More detail below                                            |
 
 **urls object**
