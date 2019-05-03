@@ -22,11 +22,9 @@ function getResults(file, htmlFile) {
         grade = regexHTML.exec(htmlFile);
     }
 
-    if (grade == null){
-        console.log("Did not receive a score, will set 0"); 
-        console.log(file);
-        result[key] = 0;
-        return result
+    if ((grade == null) || (grade[1].trim().length == 0)){
+        console.log(`Did not receive a score for ${url}`);
+        throw(`Did not receive a score for ${url}`);
     }
 
     console.log("Received securityheaders.com score "+grade[1]);
@@ -69,10 +67,8 @@ function getScore(file, result) {
     const key = 'mozilla_score';
 
     if (grade == null){
-        console.log("Did not receive a score, will set 0"); 
-        console.log(file);
-        result[key] = 0;
-        return result
+        console.log(`Did not receive a score for ${url}`);
+        throw(`Did not receive a score for ${url}`);
     }
 
     console.log("Received mozilla score "+grade[1]);
