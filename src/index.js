@@ -73,6 +73,9 @@ function getScore(file, result) {
 
     console.log("Received mozilla score "+grade[1]);
 
+    if (result == undefined){
+        result = {};
+    }
     result[key] = parseInt(grade[1]);
 
     return result;
@@ -116,9 +119,29 @@ const myGetFile = async (options) => {
     var mozillaFile = await garie_plugin.utils.helpers.getNewestFile(options);
     mozillaFile = mozillaFile.toString('utf8');
 
-    var result = getResults(securityheadersFile, securityheadersHTML);
-
-    result = getScore(mozillaFile, result);
+    var result;
+    var failedtests_cnt = 0;
+    try {
+        result = getResults(securityheadersFile, securityheadersHTML);
+    }
+    catch (err){
+        failedtests_cnt++;
+    }
+    try {
+        result = getScore(mozillaFile, result);
+    }
+    catch (err){
+        failedtests_cnt++;
+    }
+    if (failedtests_cnt == 2){
+        console.log(`Both tests failed for ${url}`);
+        throw(`Both tests failed for ${url}`);
+    }
+    if (failedtests_cnt > 0){
+        console.log(`One of the tests failed for ${url}`);
+        console.log(`Resubmit the task`);
+    }
+    result['partial_success'] = true;
 
     console.log("Will insert into the database: "+ JSON.stringify(result));
 
