@@ -140,8 +140,8 @@ const myGetFile = async (options) => {
     if (failedtests_cnt > 0){
         console.log(`One of the tests failed for ${url}`);
         console.log(`Resubmit the task`);
+        result['partial_success'] = true;
     }
-    result['partial_success'] = true;
 
     console.log("Will insert into the database: "+ JSON.stringify(result));
 
