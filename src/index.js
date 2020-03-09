@@ -88,9 +88,13 @@ const myGetFile = async (options) => {
 
     options.fileName = 'securityheaders.html'
 
-    const newestDir = await garie_plugin.utils.helpers.newestDir({'report_folder_name':'securityheaders-results', url:url, app_root:path.join(__dirname, '..')});
+    let report_folder_name = 'securityheaders-results'
+    if (reportDir.indexOf('/on-demand/') > -1) {
+      report_folder_name = path.join('on-demand', report_folder_name)
+    }
+    const newestDir = await garie_plugin.utils.helpers.newestDir({'report_folder_name':report_folder_name, url:url, app_root:path.join(__dirname, '..')});
 
-    const newestFullPath = path.join(__dirname, '..', 'reports', 'securityheaders-results', garie_plugin.utils.helpers.pathNameFromUrl(url), newestDir);
+    const newestFullPath = path.join(__dirname, '..', 'reports', report_folder_name, garie_plugin.utils.helpers.pathNameFromUrl(url), newestDir);
 
     const securityheaders_url = "https://securityheaders.com/?q="+url+"&followRedirects=on&hide=on"
     const scrape_options = {
