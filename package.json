@@ -17,7 +17,7 @@
         "start": "node ./src/index.js"
     },
     "dependencies": {
-        "garie-plugin": "https://github.com/eea/garie-plugin#0.0.17",
+        "garie-plugin": "https://github.com/eea/garie-plugin#scan-on-demand",
         "website-scraper": "4.0.0"
     },
     "devDependencies": {
