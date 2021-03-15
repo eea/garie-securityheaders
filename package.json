@@ -1,6 +1,6 @@
 {
     "name": "garie-securityheaders",
-    "version": "1.2.0",
+    "version": "1.2.1",
     "description": "Browertime image for performance metrics",
     "license": "MIT",
     "repository": "eeacms/garie-securityheaders",
