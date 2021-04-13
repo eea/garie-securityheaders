@@ -100,3 +100,6 @@ On start garie-securityheaders will start to gather performance metrics for the 
 | Property | Type                | Description                         |
 | -------- | ------------------- | ----------------------------------- |
 | `url`    | `string` (required) | Url to get securityheaders metrics for. |
+
+For more information please go to the [garie-plugin](https://github.com/eea/garie-plugin) repo.
+
