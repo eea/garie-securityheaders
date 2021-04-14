@@ -107,3 +107,4 @@ CRON_DELETE_OLD_REPORTS - cronjob (default to '0 5 * * *') The frequency of chec
 
 For more information please go to the [garie-plugin](https://github.com/eea/garie-plugin) repo.
 
+
