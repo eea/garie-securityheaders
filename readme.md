@@ -93,8 +93,9 @@ On start garie-securityheaders will start to gather performance metrics for the 
 | `plugins.securityheaders.retry.after`   | `number` (optional, default 30) | Minutes before we retry to execute the tasks |
 | `plugins.securityheaders.retry.times`   | `number` (optional, default 3) | How many time to retry to execute the failed tasks |
 | `plugins.securityheaders.retry.timeRange`   | `number` (optional, default 360) | Period in minutes to be checked in influx, to know if a task failed |
-| `plugins.securityheaders.MAX_AGE_OF_REPORT_FILES`   | `number` (optional, default 365) | Maximum age (in days) of report files that can be deleted. |
-| `plugins.securityheaders.MAX_AGE_OF_REPORT_VIDEOS`   | `number` (optional, default 100) | Maximum age (in days) of report videos that can be deleted. |
+| `plugins.securityheaders.delete_files_by_type`   | `object` (optional, no default) | Configuration for deletion of custom files. (e.g. mp4 files)  |
+| `plugins.securityheaders.delete_files_by_type.type`   | `string` (required for 'delete_files_by_type') | The type / extension of the files we want to delete. (e.g. "mp4"). |
+| `plugins.securityheaders.delete_files_by_type.age`   | `number` (required for 'delete_files_by_type') | Maximum age (in days) of the custom files. Any older file will be deleted. |
 | `urls`   | `object` (required) | Config for lighthouse. More detail below |
 
 **urls object**
