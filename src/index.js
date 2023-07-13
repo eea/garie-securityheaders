@@ -14,7 +14,7 @@ function getResults(file, htmlFile) {
 
     const key = 'header_score';
 
-    if (grade == null){
+    if ((grade == null) || (grade[1].includes("Please use an API Key"))){
         console.log("Did not receive a score, will try to extract from HTML file");
         grade = regexHTML.exec(htmlFile);
     }
