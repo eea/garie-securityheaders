@@ -65,12 +65,15 @@ function getScore(file, result) {
           throw new Error('Invalid data format: Score not found');
       }
 
-      const score = jsonContent.scan.score;
+      const score = jsonContent?.scan?.score;
+      const grade = jsonContent?.scan?.grade;
+      const normalizedScore = (grade === 'A+') ? 100 : score;
 
       if (result == undefined) {
           result = {};
       }
-      result[key] = score;
+
+      result[key] = normalizedScore;
 
       console.log("Received Mozilla Observatory score: " + score);
 
