@@ -32,13 +32,13 @@ url=$(echo $1 | awk -F[/:] '{print $4}')
 # if null, will keep the old format
 url=${url:-$1}
 
-echo "observatory $url --zero --format=report > $report_location/mozilla-observatory.txt"
+echo "mdn-http-observatory-scan $url > $report_location/mozilla-observatory.txt"
 
 try=5
 
 while [ $try -gt 0 ]; do
 
-    observatory $url --zero --format=report > $report_location/mozilla-observatory.txt
+    mdn-http-observatory-scan $url > $report_location/mozilla-observatory.txt
 
     echo "Will extract the received score from mozilla observatory:"
 
