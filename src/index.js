@@ -56,26 +56,29 @@ function getResults(file, htmlFile) {
 }
 
 function getScore(file, result) {
+  const key = 'mozilla_score';
 
-    const regex = RegExp('Score: (.*)', 'i');
+  try {
+      const jsonContent = JSON.parse(file);
 
-    const grade = regex.exec(file);
+      if (!jsonContent || !jsonContent.scan) {
+          throw new Error('Invalid data format: Score not found');
+      }
 
-    const key = 'mozilla_score';
+      const score = jsonContent.scan.score;
 
-    if (grade == null){
-        console.log(`Did not receive a score for ${url}`);
-        throw(`Did not receive a score for ${url}`);
-    }
+      if (result == undefined) {
+          result = {};
+      }
+      result[key] = score;
 
-    console.log("Received mozilla score "+grade[1]);
+      console.log("Received Mozilla Observatory score: " + score);
 
-    if (result == undefined){
-        result = {};
-    }
-    result[key] = parseInt(grade[1]);
+  } catch (error) {
+      console.log(`Error parsing JSON or extracting score: ${error.message}`);
+  }
 
-    return result;
+  return result;
 }
 
 const myGetFile = async (options) => {

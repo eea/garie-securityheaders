@@ -1,4 +1,4 @@
-FROM node:8.15.1
+FROM node:20
 
 RUN mkdir -p /usr/src/garie-plugin
 RUN mkdir -p /usr/src/garie-plugin/reports
@@ -9,7 +9,7 @@ COPY package.json .
 
 RUN cd /usr/src/garie-plugin && npm install
 
-RUN npm install -g observatory-cli
+RUN npm install --global @mdn/mdn-http-observatory
 
 RUN wget https://github.com/Yelp/dumb-init/releases/download/v1.2.2/dumb-init_1.2.2_amd64.deb && \
     dpkg -i dumb-init_*.deb
