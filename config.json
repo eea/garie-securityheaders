@@ -1,21 +1,23 @@
 {
   "plugins":{
         "securityheaders":{
-            "cron": "0 */4 * * *"
+            "cron": "0 */4 * * *",
+            "maxCpus": 1,
+            "requestDelay": 1000
         }
     },
   "urls": [
-    {
-      "url": "https://www.eea.europa.eu/"
-    },
-    {
-      "url": "https://biodiversity.europa.eu/"
-    },
-    {
-      "url": "https://www.eionet.europa.eu/gemet/en/themes/"
-    },
-    {
-      "url": "https://webq2test.eionet.europa.eu/"
-    }
-  ]
+	{
+		"url": "https://www.eea.europa.eu/"
+	  },
+	  {
+		"url": "https://biodiversity.europa.eu/"
+	  },
+	  {
+		"url": "https://www.eionet.europa.eu/gemet/en/themes/"
+	  },
+	  {
+		"url": "https://webq2test.eionet.europa.eu/"
+	  }
+	]
 }

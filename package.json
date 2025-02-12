@@ -18,7 +18,9 @@
     },
     "dependencies": {
         "garie-plugin": "https://github.com/eea/garie-plugin#0.0.45",
-        "website-scraper": "4.0.0"
+        "playwright": "^1.50.1",
+        "user-agents": "^1.1.446",
+        "fs-extra": "^7.0.0"
     },
     "devDependencies": {
         "codecov": "^3.0.0",

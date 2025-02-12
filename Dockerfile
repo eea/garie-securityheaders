@@ -11,6 +11,8 @@ RUN cd /usr/src/garie-plugin && npm install
 
 RUN npm install --global @mdn/mdn-http-observatory
 
+RUN npx playwright install --with-deps
+
 RUN wget https://github.com/Yelp/dumb-init/releases/download/v1.2.2/dumb-init_1.2.2_amd64.deb && \
     dpkg -i dumb-init_*.deb
 
