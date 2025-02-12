@@ -28,28 +28,25 @@ async function getSecurityHeadersScore(url, newestFullPath, reportDir) {
   const userAgent = new UserAgent();
   let grade = null;
 
-  try {
-    const context = await browser.newContext({
-      userAgent: userAgent.toString(),
+  const context = await browser.newContext({ userAgent: userAgent.toString() });
+  const page = await context.newPage();
+  const securityheaders_url = `${SECURITY_URL}?q=${url}&followRedirects=on&hide=on`;
+
+  await page.goto(securityheaders_url, { waitUntil: "domcontentloaded", timeout: 15000 })
+    .catch(error => {
+      throw new Error(`Failed to load page: ${error.message}`);
     });
 
-    const page = await context.newPage();
-    const securityheaders_url = `${SECURITY_URL}?q=${url}&followRedirects=on&hide=on`;
+  const scoreElement = await page.$(".score span");
+  if (scoreElement) {
+    grade = await page.evaluate(el => el.textContent.trim(), scoreElement);
+  }
 
-    try {
-      await page.goto(securityheaders_url, { waitUntil: "domcontentloaded", timeout: 15000 });
-    } catch (error) {
-      console.log(`Failed to load ${securityheaders_url}: ${error.message}`);
-    }
+  if (!grade || grade.trim().length === 0) {
+    throw (`Did not receive a grade for ${url}`);
+  }
 
-    try {
-      const scoreElement = await page.$(".score span");
-      grade = scoreElement ? await page.evaluate(el => el.textContent.trim(), scoreElement) : null;
-    } catch (error) {
-      console.log(`[SecurityHeaders] Error extracting grade: ${error.message}`);
-    }
-
-    const htmlContent = await page.content();
+  const htmlContent = await page.content();
     const updatedHtmlContent = htmlContent.replace(/(href|src)="(\/[^"]+)"/g,
       (_, attr, relativeUrl) => `${attr}="${new URL(relativeUrl, SECURITY_URL).href}"`);
 
@@ -59,21 +56,11 @@ async function getSecurityHeadersScore(url, newestFullPath, reportDir) {
     }
     fs.writeFileSync(path.join(tmpPath, 'securityheaders.html'), updatedHtmlContent, 'utf8');
 
-    await executeMoveScript(url, reportDir, newestFullPath);
+  await executeMoveScript(url, reportDir, newestFullPath);
+  await browser.close();
 
-    if (!grade) {
-      return 0;
-    }
-
-    console.log(`[SecurityHeaders] Grade: ${grade || "Not found"} (Score: ${convertGradeToScore(grade)})`);
-    return convertGradeToScore(grade);
-
-  } catch (error) {
-    console.log("[SecurityHeaders] Failed to extract grade:", error);
-    return 0;
-  } finally {
-    await browser.close();
-  }
+  console.log(`[SecurityHeaders] Grade: ${grade} (Score: ${convertGradeToScore(grade)})`);
+  return convertGradeToScore(grade);
 }
 
 
@@ -90,30 +77,24 @@ async function executeMoveScript(url, reportDir, newestFullPath) {
 
 function getMozillaScore(file, result) {
   const key = 'mozilla_score';
+  const jsonContent = JSON.parse(file);
 
-  try {
-      const jsonContent = JSON.parse(file);
-
-      if (!jsonContent || !jsonContent.scan) {
-          throw new Error('[Mozilla Http Observatory] Missing scan data in response');
-      }
-
-      const score = jsonContent?.scan?.score;
-      const grade = jsonContent?.scan?.grade;
-      const normalizedScore = (grade === 'A+') ? 100 : score;
-
-      if (result == undefined) {
-          result = {};
-      }
-
-      result[key] = normalizedScore;
-
-      console.log("[Mozilla Http Observatory] Score: " + score);
-
-  } catch (error) {
-      console.log(`[Mozilla Http Observatory] Error extracting score: ${error.message}`);
-      result[key] = 0; 
+  if (!jsonContent || !jsonContent.scan) {
+      throw(`Did not receive a Mozilla Http Observatory score`);
   }
+
+  const score = jsonContent?.scan?.score;
+  const grade = jsonContent?.scan?.grade;
+
+  const normalizedScore = (grade === 'A+') ? 100 : score;
+
+  console.log("[Mozilla Http Observatory] Score: " + normalizedScore);
+
+  if (result === undefined) {
+      result = {};
+  }
+
+  result[key] = normalizedScore;
 
   return result;
 }
