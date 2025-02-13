@@ -42,21 +42,22 @@ async function getSecurityHeadersScore(url, newestFullPath, reportDir) {
     grade = await page.evaluate(el => el.textContent.trim(), scoreElement);
   }
 
+  const htmlContent = await page.content();
+  const updatedHtmlContent = htmlContent.replace(/(href|src)="(\/[^"]+)"/g,
+    (_, attr, relativeUrl) => `${attr}="${new URL(relativeUrl, SECURITY_URL).href}"`);
+    
+  const tmpPath = path.join(newestFullPath, 'tmp');
+  if (!fs.existsSync(tmpPath)) {
+    fs.mkdirSync(tmpPath, { recursive: true });
+  }
+  fs.writeFileSync(path.join(tmpPath, 'securityheaders.html'), updatedHtmlContent, 'utf8');
+  
+  await executeMoveScript(url, reportDir, newestFullPath);
+
   if (!grade || grade.trim().length === 0) {
     throw (`Did not receive a grade for ${url}`);
   }
 
-  const htmlContent = await page.content();
-    const updatedHtmlContent = htmlContent.replace(/(href|src)="(\/[^"]+)"/g,
-      (_, attr, relativeUrl) => `${attr}="${new URL(relativeUrl, SECURITY_URL).href}"`);
-
-    const tmpPath = path.join(newestFullPath, 'tmp');
-    if (!fs.existsSync(tmpPath)) {
-      fs.mkdirSync(tmpPath, { recursive: true });
-    }
-    fs.writeFileSync(path.join(tmpPath, 'securityheaders.html'), updatedHtmlContent, 'utf8');
-
-  await executeMoveScript(url, reportDir, newestFullPath);
   await browser.close();
 
   console.log(`[SecurityHeaders] Grade: ${grade} (Score: ${convertGradeToScore(grade)})`);
