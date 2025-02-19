@@ -8,6 +8,10 @@
 
 **Highlights**
 
+The `garie-securityheaders` plugin utilizes both **SecurityHeaders.com** and **Mozilla’s HTTP Observatory** to provide website security analysis. 
+
+**Security Headers Score**
+
 -   Poll for http://securityheaders.com/ score on any website and stores the data into InfluxDB
     *  A+ - 100
     *  A  - 90
@@ -17,20 +21,26 @@
     *  E  - 20
     *  F  - 10
     *  R  - 0
--   View all historic reports.
+-   Saves security reports as HTML for reference.
 -   Setup within minutes
+
+**Mozilla HTTP Observatory Score**
+
+- Uses [Mozilla’s HTTP Observatory](https://developer.mozilla.org/en-US/observatory) to perform a **security analysis** of website headers
+- Runs **`mdn-http-observatory-scan`** to scan a website
+- Extracts the **security score** and **grade**, storing them in the database
 
 ## Overview of garie-securityheaders
 
-Garie-securityheaders was developed as a plugin for the [Garie](https://github.com/boyney123/garie) Architecture.
+Garie-securityheaders was developed as a plugin for the [Garie](https://github.com/boyney123/garie) architecture.
 
 [Garie](https://github.com/boyney123/garie) is an out the box web performance toolkit, and `garie-securityheaders` is a plugin that generates and stores securityheaders data into `InfluxDB`.
 
-`Garie-securityheaders` can also be run outside the `Garie` environment and run as standalone.
+`Garie-securityheaders` can also run independently outside the `Garie` environment as a standalone tool.
 
 If your interested in an out the box solution that supports multiple performance tools like `securityheaders`, `google-speed-insight` and `lighthouse` then checkout [Garie](https://github.com/boyney123/garie).
 
-If you want to run `garie-securityheaders` standalone you can find out how below.
+If you want to run `garie-securityheaders` as a standalone tool, follow the instructions below.
 
 ## Getting Started
 
@@ -54,7 +64,9 @@ Next setup you're config. Edit the `config.json` and add websites to the list.
 {
   "plugins":{
         "securityheaders":{
-            "cron": "0 */4 * * *"
+            "cron": "0 */4 * * *",
+            "maxCpus": 1,
+            "requestDelay": 1000
         }
     },
   "urls": [
@@ -89,6 +101,8 @@ On start garie-securityheaders will start to gather performance metrics for the 
 | Property | Type                | Description                                                                          |
 | -------- | ------------------- | ------------------------------------------------------------------------------------ |
 | `plugins.securityheaders.cron`   | `string` (optional) | Cron timer. Supports syntax can be found [here].(https://www.npmjs.com/package/cron) |
+| `plugins.securityheaders.maxCpus`   | `number` (optional) | Limits CPU usage for security scans |
+| `plugins.securityheaders.requestDelay`   | `number` (optional) | Delay (ms) between requests |
 | `plugins.securityheaders.retry`   | `object` (optional) | Configuration how to retry the failed tasks |
 | `plugins.securityheaders.retry.after`   | `number` (optional, default 30) | Minutes before we retry to execute the tasks |
 | `plugins.securityheaders.retry.times`   | `number` (optional, default 3) | How many time to retry to execute the failed tasks |
