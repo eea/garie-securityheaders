@@ -1,6 +1,6 @@
 FROM node:20 AS builder
 
-RUN npm install --global @mdn/mdn-http-observatory
+RUN npm install --global @mdn/mdn-http-observatory@1.6.2
 RUN npx playwright install chromium
 
 FROM node:20-bookworm-slim
@@ -17,6 +17,8 @@ COPY --from=builder /usr/local/bin/mdn-http-observatory-scan /usr/local/bin/mdn-
 
 COPY --from=builder /root/.cache/ms-playwright /root/.cache/ms-playwright
 RUN npx playwright install-deps chromium && \
+    apt-get remove -y xvfb xserver-common && \
+    apt-get autoremove -y && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* && \
     rm -rf /tmp/*
