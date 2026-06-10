@@ -1,20 +1,27 @@
 FROM node:20
 
-RUN mkdir -p /usr/src/garie-plugin
+RUN apt-get update && \
+    apt-get upgrade -y && \
+    apt-get install -y --no-install-recommends \
+        dumb-init && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
+
+RUN npm install --global @mdn/mdn-http-observatory
+
 RUN mkdir -p /usr/src/garie-plugin/reports
 
 WORKDIR /usr/src/garie-plugin
 
-COPY package.json .
+COPY package.json package-lock.json ./
+RUN npm ci --omit=dev && \
+    npm cache clean --force
 
-RUN cd /usr/src/garie-plugin && npm install
-
-RUN npm install --global @mdn/mdn-http-observatory
-
-RUN npx playwright install --with-deps
-
-RUN wget https://github.com/Yelp/dumb-init/releases/download/v1.2.2/dumb-init_1.2.2_amd64.deb && \
-    dpkg -i dumb-init_*.deb
+RUN npx playwright install chromium && \
+    npx playwright install-deps chromium && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/* && \
+    rm -rf /tmp/*
 
 COPY . .
 
