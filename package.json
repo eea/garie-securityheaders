@@ -1,6 +1,6 @@
 {
     "name": "garie-securityheaders",
-    "version": "2.0.0",
+    "version": "2.0.3",
     "description": "Browertime image for performance metrics",
     "license": "MIT",
     "repository": "eeacms/garie-securityheaders",
@@ -17,15 +17,15 @@
         "start": "node ./src/index.js"
     },
     "dependencies": {
-        "garie-plugin": "https://github.com/eea/garie-plugin#0.0.45",
-        "playwright": "^1.50.1",
-        "user-agents": "^1.1.446",
-        "fs-extra": "^7.0.0"
+        "garie-plugin": "https://github.com/eea/garie-plugin#0.0.46",
+        "playwright": "^1.60.0",
+        "user-agents": "^2.1.87",
+        "fs-extra": "^11.3.5"
     },
     "devDependencies": {
-        "codecov": "^3.0.0",
-        "jest": "^23.5.0",
-        "prettier": "1.13.7",
-        "supertest": "^3.3.0"
+        "codecov": "^3.8.3",
+        "jest": "^30.4.2",
+        "prettier": "^3.8.4",
+        "supertest": "^7.2.2"
     }
 }
