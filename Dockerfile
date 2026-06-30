@@ -12,8 +12,7 @@ RUN apt-get update && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
-COPY --from=builder /usr/local/lib/node_modules /usr/local/lib/node_modules
-COPY --from=builder /usr/local/bin/mdn-http-observatory-scan /usr/local/bin/mdn-http-observatory-scan
+RUN npm install --global @mdn/mdn-http-observatory@1.6.2
 
 COPY --from=builder /root/.cache/ms-playwright /root/.cache/ms-playwright
 RUN npx playwright install-deps chromium && \
