@@ -12,7 +12,7 @@ RUN apt-get update && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
-COPY --from=builder /usr/local/lib/node_modules/@mdn/mdn-http-observatory /usr/local/lib/node_modules/@mdn/mdn-http-observatory
+COPY --from=builder /usr/local/lib/node_modules /usr/local/lib/node_modules
 COPY --from=builder /usr/local/bin/mdn-http-observatory-scan /usr/local/bin/mdn-http-observatory-scan
 
 COPY --from=builder /root/.cache/ms-playwright /root/.cache/ms-playwright
